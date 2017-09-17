@@ -3,6 +3,7 @@ var stdin = process.openStdin();
 var fs = require('fs');
 var handler = require('./handler');
 
+
 stdin.addListener("data", function(d) {
     let key = "\r\n\r\n";
     let keyBuffer = new Buffer(key);
