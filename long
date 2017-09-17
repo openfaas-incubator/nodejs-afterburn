@@ -1,3 +1,11 @@
+POST / HTTP/1.1
+Host: localhost:9091
+User-Agent: curl/7.51.0
+Accept: */*
+Content-Type: text/plain
+Content-Length: 8591
+Expect: 100-continue
+
 Watchdog
 ==========
 
