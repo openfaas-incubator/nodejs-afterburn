@@ -3,7 +3,7 @@
 function handler(context, callback) {
     let err = null;
     
-    callback(err, "Input:\n" + context);
+    callback(err, context);
 }
 
 module.exports = handler;

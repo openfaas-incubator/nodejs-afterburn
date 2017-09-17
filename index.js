@@ -9,22 +9,22 @@ stdin.addListener("data", function(d) {
     let index = d.indexOf(key);
 
     let st = d.toString();
-    console.log(st.substring(0, st.indexOf(key)))
+    // console.log(st.substring(0, st.indexOf(key)))
 
-    let body = new Buffer(d.length - index);
-    d.copy(body, 0, index);
-    console.log(body.toString())
+    let body = new Buffer(d.length - (index+keyBuffer.byteLength));
+    d.copy(body, 0, index+keyBuffer.byteLength);
+    // console.log(body.toString())
 
     handler(body.toString(), (err, output) => {
-        let result = wrap(output);
-        process.stdout.write(result);
+        let result = addHttp(output);
+        let done = process.stdout.write(result);
         // process.exit();
     });
 });
 
-function wrap(content) {
-    return "HTTP/1.1 200 OK\r\n"+
+function addHttp(content) {
+    return new Buffer("HTTP/1.1 200 OK\r\n"+
     "Content-Length: "+ content.length + "\r\n" +
     "\r\n" + 
-    content;
+    content);
 }
