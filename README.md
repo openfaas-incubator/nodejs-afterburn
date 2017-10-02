@@ -34,6 +34,12 @@ COPY fwatchdog /usr/local/bin/
 RUN chmod +x /usr/local/bin/fwatchdog
 ```
 
+* Set the fork mode
+
+```
+ENV afterburn=true
+```
+
 * Replace the "template/node" files with what you find in this repo.
 
 ```
