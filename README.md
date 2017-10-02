@@ -31,7 +31,7 @@ RUN apk --no-cache add curl \
 
 ```
 COPY fwatchdog /usr/local/bin/
-RUN chmod +X /usr/local/bin/fwatchdog
+RUN chmod +x /usr/local/bin/fwatchdog
 ```
 
 * Replace the "template/node" files with what you find in this repo.
