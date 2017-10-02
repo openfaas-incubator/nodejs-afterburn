@@ -7,7 +7,7 @@ $ git pull https://github.com/openfaas/faas/pulls && \
   cd faas && \
   git checkout afterburn_01 && \
   cd watchdog && \
-  ./build_redist.sh
+  ./build.sh
 ```
 
 Now create a Dockerfile:
