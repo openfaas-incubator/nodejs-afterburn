@@ -18,9 +18,28 @@ $ faas-cli new faster --lang node
 
 * Edit faster/Dockerfile and remove the line that fetches the watchdog.
 
+```
+# Alternatively use ADD https:// (which will not be cached by Docker builder)
+RUN apk --no-cache add curl \ 
+    && echo "Pulling watchdog binary from Github." \
+    && curl -sSL https://github.com/openfaas/faas/releases/download/0.6.1/fwatchdog > /usr/bin/fwatchdog \
+    && chmod +x /usr/bin/fwatchdog \
+    && apk del curl --no-cache
+```
+
 * Copy in the local version of the fwatchdog with `COPY fwatchdog /usr/local/bin/`
 
+```
+COPY fwatchdog /usr/local/bin/
+RUN chmod +X /usr/local/bin/fwatchdog
+```
+
 * Replace the "template/node" files with what you find in this repo.
+
+```
+$ git clone https://github.com/alexellis/nodejs-afterburn && \
+  cp -r nodejs-afterburn/* ./template/node/
+```
 
 Build/deploy/run:
 
