@@ -46,5 +46,5 @@ Build/deploy/run:
 ```
 $ faas-cli build -f faster.yml && \
   faas-cli deploy -f faster.yml
-$ echo test-values-go-here | faas-cli invoke faster -f faster.yml
+$ echo test-values-go-here | faas-cli invoke --name faster -f faster.yml
 ```
