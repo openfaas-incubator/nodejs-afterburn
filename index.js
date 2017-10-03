@@ -1,7 +1,7 @@
 "use strict"
 var stdin = process.openStdin();
 var fs = require('fs');
-var handler = require('./handler');
+var handler = require('./function/handler.js');
 
 
 stdin.addListener("data", function(d) {
@@ -16,9 +16,16 @@ stdin.addListener("data", function(d) {
     d.copy(body, 0, index+keyBuffer.byteLength);
     // console.log(body.toString())
 
-    handler(body.toString(), (err, output) => {
-        let result = addHttp(output);
-        let done = process.stdout.write(result);
+    handler(body.toString(), (err, res) => {
+        let result;
+        if(isArray(res) || isObject(res)) {
+            result = JSON.stringify(res);
+    } else {
+        result = res;
+    }
+
+        let done = process.stdout.write(addHttp(result));
+
         // process.exit();
     });
 });
@@ -29,3 +36,12 @@ function addHttp(content) {
     "\r\n" + 
     content);
 }
+
+let isArray = (a) => {
+    return (!!a) && (a.constructor === Array);
+};
+
+let isObject = (a) => {
+    return (!!a) && (a.constructor === Object);
+};
+
