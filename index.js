@@ -20,13 +20,11 @@ stdin.addListener("data", function(d) {
         let result;
         if(isArray(res) || isObject(res)) {
             result = JSON.stringify(res);
-    } else {
-        result = res;
-    }
+        } else {
+            result = res;
+        }
 
         let done = process.stdout.write(addHttp(result));
-
-        // process.exit();
     });
 });
 
