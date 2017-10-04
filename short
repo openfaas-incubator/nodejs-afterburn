@@ -1,0 +1,16 @@
+POST / HTTP/1.1
+Host: localhost:9091
+User-Agent: curl/7.43.0
+Accept: */*
+Content-Length: 133
+Content-Type: application/x-www-form-urlencoded
+
+provider:
+  name: faas
+  gateway: http://localhost:8080
+
+functions:
+  faster:
+    lang: node
+    handler: ./faster
+    image: faster

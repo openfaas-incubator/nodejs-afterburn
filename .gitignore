@@ -1,1 +1,3 @@
-watchdog
+**/watchdog
+**/fwatchdog
+build
