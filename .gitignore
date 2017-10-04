@@ -1,8 +1,3 @@
-<<<<<<< HEAD
 watchdog
 node_modules
-=======
-**/watchdog
-**/fwatchdog
-build
->>>>>>> a288a495c13f3527bb5ebb7a0b22b6f4dde21ec0
+yarn-error.log
