@@ -1,4 +1,4 @@
-For use with AfterBurn 0.1 in OpenFaaS repo.
+For use with [AfterBurn](https://blog.alexellis.io/openfaas-serverless-acceleration/) 0.1 in OpenFaaS repo.
 
 Checkout patch and build:
 
