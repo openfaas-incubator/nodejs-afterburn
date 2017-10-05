@@ -16,25 +16,35 @@ stdin.addListener("data", function(d) {
     d.copy(body, 0, index+keyBuffer.byteLength);
     // console.log(body.toString())
 
-    handler(body.toString(), (err, res) => {
-        let result;
-        if(isArray(res) || isObject(res)) {
-            result = JSON.stringify(res);
-    } else {
-        result = res;
+    try {
+        let contentType = "";
+        handler(body.toString(), (err, res) => {
+            let result;
+
+            if(err) {
+                result = err.toString();
+            } else if(isArray(res) || isObject(res)) {
+                result = JSON.stringify(res);
+                contentType = "application/json";
+            } else {
+                result = res;
+            }
+
+            let done = process.stdout.write(addHttp(result, contentType));
+
+            // process.exit();
+        });
+    } catch(e) {
+        let done = process.stdout.write(addHttp(e.toString(), contentType));
     }
 
-        let done = process.stdout.write(addHttp(result));
-
-        // process.exit();
-    });
 });
 
-function addHttp(content) {
-    return new Buffer("HTTP/1.1 200 OK\r\n"+
+function addHttp(content, contentType) {
+    return new Buffer("HTTP/1.1 200 OK\r\n" +
+    (contentType.length > 0 ? ("Content-Type: "+ contentType+"\r\n") : "") +
     "Content-Length: "+ content.length + "\r\n" +
-    "\r\n" + 
-    content);
+    "\r\n" + content);
 }
 
 let isArray = (a) => {
