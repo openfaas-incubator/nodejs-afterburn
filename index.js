@@ -11,7 +11,13 @@ let resetRequest = function(req) {
     req.header = undefined;
 }
 
+var logs = {
+    count:0 
+};
+
 stdin.addListener("data", function(data) {
+    //fs.writeFileSync("data_"+logs.count + ".log", data.length+"");
+
     currentRequest.received = Buffer.concat([currentRequest.received, data]);
 
     let key = "\r\n\r\n"; // marks the start of a "HTTP header"
@@ -35,14 +41,16 @@ stdin.addListener("data", function(data) {
         currentRequest.contentLength =  bodyLength;
         currentRequest.header = parsedHeader;
 
-        if (bodyLength + headerLength < currentRequest.received.length) {
-            console.log(currentRequest.received.length, headerLength, bodyLength)
-            process.exit(1)
+        if (currentRequest.received.length+ headerLength < bodyLength+headerLength) {
+
+            return;
         }
+
         let body = new Buffer(bodyLength);
 
         currentRequest.received.copy(body, 0, headerLength, headerLength+bodyLength);
-
+        //fs.writeFileSync("currentRequest.received_"+logs.count + ".log", currentRequest.received.length+", header: "+ headerLength + ", bodyLength: " + bodyLength );
+        
         handler(body.toString(), (err, res) => {
             let result;
             if(isArray(res) || isObject(res)) {
