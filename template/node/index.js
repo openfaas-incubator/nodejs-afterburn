@@ -16,27 +16,28 @@ stdin.addListener("data", function(d) {
     d.copy(body, 0, index+keyBuffer.byteLength);
     // console.log(body.toString())
 
-    try {
         let contentType = "";
-        handler(body.toString(), (err, res) => {
-            let result;
 
-            if(err) {
-                result = err.toString();
-            } else if(isArray(res) || isObject(res)) {
-                result = JSON.stringify(res);
-                contentType = "application/json";
-            } else {
-                result = res;
-            }
+        let promise = new Promise((resolve, reject) => {
+            handler(body.toString(), (err, res) => {
+                let result;
 
+                if(err) {
+                    result = err.toString();
+                } else if(isArray(res) || isObject(res)) {
+                    result = JSON.stringify(res);
+                    contentType = "application/json";
+                } else {
+                    result = res;
+                }
+
+                resolve(result);
+            });
+        }).then((result) => {
             let done = process.stdout.write(addHttp(result, contentType));
-
-            // process.exit();
+        }).catch((e)=> {
+            let done = process.stdout.write(addHttp(e.toString(), contentType));
         });
-    } catch(e) {
-        let done = process.stdout.write(addHttp(e.toString(), contentType));
-    }
 
 });
 
