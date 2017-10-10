@@ -12,7 +12,7 @@ let resetRequest = function(req) {
 }
 
 var logs = {
-    count:0 
+    count: 0
 };
 
 stdin.addListener("data", function(data) {
@@ -29,49 +29,65 @@ stdin.addListener("data", function(data) {
 
         process.exit(1);
     } else {
-        
+
         let headerLength = index + keyBuffer.length; // received.length - (index + keyBuffer.byteLength);
 
         let header = new Buffer(headerLength);
         currentRequest.received.copy(header, 0, 0, headerLength);
-        
+
         let parsedHeader = parseHeader(header.toString());
         let bodyLength = parseInt(parsedHeader["Content-Length"]);
 
         currentRequest.contentLength =  bodyLength;
         currentRequest.header = parsedHeader;
 
-        if (currentRequest.received.length+ headerLength < bodyLength+headerLength) {
+        if (currentRequest.received.length + headerLength < bodyLength + headerLength) {
 
             return;
         }
 
         let body = new Buffer(bodyLength);
 
-        currentRequest.received.copy(body, 0, headerLength, headerLength+bodyLength);
+        currentRequest.received.copy(body, 0, headerLength, headerLength + bodyLength);
         //fs.writeFileSync("currentRequest.received_"+logs.count + ".log", currentRequest.received.length+", header: "+ headerLength + ", bodyLength: " + bodyLength );
-        
-        handler(body.toString(), (err, res) => {
-            let result;
-            if(isArray(res) || isObject(res)) {
-                result = JSON.stringify(res);
-            } else {
-                result = res;
-            }
 
-            let done = process.stdout.write(addHttp(result));
+        let promise = new Promise((resolve, reject) => {
+                handler(body.toString(), (err, res) => {
+                    let result;
+                    let contentType = "";
 
-            resetRequest(currentRequest);
-        });
+                    if (err) {
+                        result = err.toString();
+                    } else if (isArray(res) || isObject(res)) {
+                        result = JSON.stringify(res);
+                        contentType = "application/json";
+                    } else {
+                        result = res;
+                    }
+
+                    let output = addHttp(result, contentType)
+
+                    resetRequest(currentRequest);
+
+                    resolve(output);
+                });
+            })
+            .then((output) => {
+                let done = process.stdout.write(output);
+            })
+            .catch(e => {
+                let done = process.stdout.write(addHttp(e.toString(), "text/plain"));
+            });
     }
 });
 
-function addHttp(content) {
-    return new Buffer("HTTP/1.1 200 OK\r\n"+
-    "Content-Length: "+ content.length + "\r\n" +
-    "\r\n" + 
-    content);
+function addHttp(content, contentType) {
+    return new Buffer("HTTP/1.1 200 OK\r\n" +
+        (contentType.length > 0 ? ("Content-Type: " + contentType + "\r\n") : "") +
+        "Content-Length: " + content.length + "\r\n" +
+        "\r\n" + content);
 }
+
 
 let isArray = (a) => {
     return (!!a) && (a.constructor === Array);
