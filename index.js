@@ -52,6 +52,7 @@ stdin.addListener("data", function(data) {
         //fs.writeFileSync("currentRequest.received_"+logs.count + ".log", currentRequest.received.length+", header: "+ headerLength + ", bodyLength: " + bodyLength );
 
         let promise = new Promise((resolve, reject) => {
+            try {
                 handler(body.toString(), (err, res) => {
                     let result;
                     let contentType = "";
@@ -71,6 +72,10 @@ stdin.addListener("data", function(data) {
 
                     resolve(output);
                 });
+            }
+            catch(e) {
+                reject(e.message)
+            }
             })
             .then((output) => {
                 let done = process.stdout.write(output);
