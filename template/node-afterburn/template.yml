@@ -1,0 +1,2 @@
+language: node-afterburn
+fprocess: node index.js
