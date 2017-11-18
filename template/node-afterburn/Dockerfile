@@ -2,7 +2,7 @@ FROM node:6.11.2-alpine
 
 RUN apk add --no-cache curl && \
     curl -sfL \
-    https://github.com/openfaas-incubator/of-watchdog/releases/download/0.0.3/of-watchdog > /usr/bin/fwatchdog && \
+    https://github.com/openfaas-incubator/of-watchdog/releases/download/0.0.4/of-watchdog > /usr/bin/fwatchdog && \
     chmod +x /usr/bin/fwatchdog
 
 WORKDIR /root/
