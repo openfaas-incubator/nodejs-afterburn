@@ -1,0 +1,2 @@
+language: node-afterburn-armhf
+fprocess: node index.js
