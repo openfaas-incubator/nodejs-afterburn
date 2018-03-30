@@ -15,6 +15,9 @@ faas-cli build -f burner.yml
 faas-cli deploy -f burner.yml
 echo test | faas-cli invoke burner
 ```
+## What is afterburn?
+
+The Function Watchdog offers a second mode called: [AfterBurn](https://blog.alexellis.io/openfaas-serverless-acceleration/). AfterBurn is where we fork your process once then keep it around for subsequent requests meaning that you can make your functions run faster.
 
 ## Previous version:
 
