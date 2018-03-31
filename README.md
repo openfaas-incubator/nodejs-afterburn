@@ -1,6 +1,10 @@
 Node.js AfterBurn language template
 ==========================================
 
+## Status
+
+AfterBurn is in incubation under the [of-watchdog project](https://github.com/openfaas-incubator/of-watchdog). It is due to be deprecated by the HTTP mode for the of-watchdog. 
+
 ## Usage
 
 With `of-watchdog`
@@ -15,7 +19,3 @@ faas-cli build -f burner.yml
 faas-cli deploy -f burner.yml
 echo test | faas-cli invoke burner
 ```
-
-## Previous version:
-
-For previous version of instructions found in the 0.1 PR checkout the 0.3 tag.
